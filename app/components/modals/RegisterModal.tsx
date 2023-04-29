@@ -6,16 +6,18 @@ import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import Modal from './Modal';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
 import { signIn } from 'next-auth/react';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 const RegisterModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const {
     register,
     handleSubmit,
@@ -33,6 +35,11 @@ const RegisterModal: React.FC = () => {
     }
     setIsLoading(false);
   };
+
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -84,10 +91,7 @@ const RegisterModal: React.FC = () => {
       <div className="text-neutral-500 mt-4 font-light">
         <div className="flex gap-2 items-center justify-center">
           <p>Already have an account?</p>
-          <p
-            onClick={registerModal.onClose}
-            className="text-neutral-800 cursor-pointer hover:underline"
-          >
+          <p onClick={toggle} className="text-neutral-800 cursor-pointer hover:underline">
             Log in
           </p>
         </div>

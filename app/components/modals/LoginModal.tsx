@@ -5,7 +5,7 @@ import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import Modal from './Modal';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast';
@@ -39,6 +39,11 @@ const LoginModal: React.FC = () => {
     }
     setIsLoading(false);
   };
+
+  const toggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -81,12 +86,9 @@ const LoginModal: React.FC = () => {
       />
       <div className="text-neutral-500 mt-4 font-light">
         <div className="flex gap-2 items-center justify-center">
-          <p>Already have an account?</p>
-          <p
-            onClick={loginModal.onClose}
-            className="text-neutral-800 cursor-pointer hover:underline"
-          >
-            Log in
+          <p>First time using Airbnb?</p>
+          <p onClick={toggle} className="text-neutral-800 cursor-pointer hover:underline">
+            Create an account
           </p>
         </div>
       </div>
